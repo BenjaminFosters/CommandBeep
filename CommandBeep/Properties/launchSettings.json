@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "CommandBeep (Package)": {
+      "commandName": "MsixPackage",
+      "doNotLaunchApp": true
+    },
+    "CommandBeep (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
