@@ -1,0 +1,63 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using CommandBeep.Backend;
+using Microsoft.CommandPalette.Extensions;
+using Microsoft.CommandPalette.Extensions.Toolkit;
+
+namespace CommandBeep.Pages;
+
+internal partial class CommandBeepSendPage : DynamicListPage {
+    private readonly BeeperSrv _beeperSrv;
+    string _chatTitle = string.Empty;
+    string _chatId = string.Empty;
+    string _query = string.Empty;
+    public CommandBeepSendPage(BeeperSrv beeperSrv, string chatId, string chatTitle)
+    {
+        Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
+        Title = $"CommandBeep - Sending to {chatTitle}";
+        Name = "Send!";
+        PlaceholderText = "Type in your message (such as helloing your recepient)";
+        EmptyContent = new CommandItem()
+        {
+            Title = "We're Waiting For Your Message",
+            Subtitle = "Just a \"Hello, World!\" will do alright?",
+            Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png"),
+        };
+        _beeperSrv = beeperSrv;
+        _chatId = chatId;
+        _chatTitle = chatTitle;
+    }
+
+    public override void UpdateSearchText(string oldSearch, string newSearch)
+    {
+        _query = newSearch;
+        RaiseItemsChanged();
+    }
+
+    public override IListItem[] GetItems()
+    {
+        if (_query == string.Empty)
+        {
+            return [];
+        }
+        else
+        {
+            return [new ListItem()
+            {
+                Title = $"Send \"{_query}\"",
+                Subtitle = $"Send message to {_chatTitle}",
+                Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png"),
+                Command = new AnonymousCommand(async () =>
+                {
+                    await _beeperSrv.sendMessage(_chatId, _query);
+                    CommandResult.Dismiss();
+                }),
+            }];
+        }
+    }
+}
