@@ -16,7 +16,7 @@ public partial class CommandBeepCommandsProvider : CommandProvider
         DisplayName = "CommandBeep";
         Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
         _commands = [
-            new CommandItem(new CommandBeepPage()) { Title = DisplayName },
+            new CommandItem(new CommandBeepPage()) { Title = DisplayName, Subtitle = "Send your Beeper Messages through Command Palette Window" },
         ];
     }
 

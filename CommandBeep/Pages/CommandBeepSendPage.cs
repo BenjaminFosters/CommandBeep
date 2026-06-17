@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ internal partial class CommandBeepSendPage : DynamicListPage {
     {
         Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
         Title = $"CommandBeep - Sending to {chatTitle}";
-        Name = "Send!";
+        Name = "Send a Message";
         PlaceholderText = "Type in your message (such as helloing your recepient)";
         EmptyContent = new CommandItem()
         {
@@ -47,16 +48,14 @@ internal partial class CommandBeepSendPage : DynamicListPage {
         }
         else
         {
+
             return [new ListItem()
             {
                 Title = $"Send \"{_query}\"",
                 Subtitle = $"Send message to {_chatTitle}",
-                Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png"),
-                Command = new AnonymousCommand(async () =>
-                {
-                    await _beeperSrv.sendMessage(_chatId, _query);
-                    CommandResult.Dismiss();
-                }),
+                Command = new AnonymousCommand(() => {
+                    _ = _beeperSrv.sendMessage(_chatId, _query);
+                }) { Name = "Send", Result = CommandResult.ShowToast("Message Sent") }
             }];
         }
     }

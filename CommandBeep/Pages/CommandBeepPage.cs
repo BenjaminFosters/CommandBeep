@@ -59,7 +59,7 @@ internal sealed partial class CommandBeepPage : DynamicListPage
             {
                 Title = chat.title,
                 Subtitle = $"Over at {chat.network}",
-                //Icon = chat.imgURL != null ? IconHelpers.FromRelativePath(new Uri(chat.imgURL).LocalPath) : IconHelpers.FromRelativePath("Assets\\StoreLogo.png"), (TO BE IMPLEMENTED)
+                Icon = chat.imgURL != null ? IconHelpers.FromRelativePath(new Uri(chat.imgURL).LocalPath) : IconHelpers.FromRelativePath("Assets\\StoreLogo.png"),
                 Command = new CommandBeepSendPage(_beeperSrv, chat.id, chat.title),
             }).ToArray();
         }
