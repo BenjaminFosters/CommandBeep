@@ -13,7 +13,7 @@ More information on diagram planning here: [FigJam Link](https://www.figma.com/b
 
 # Development
 
-## Pre-requisites[^1]
+## Pre-requisites
 
 1. [**Visual Studio** with **Windows App SDK** & **WinUI workload** installed](https://learn.microsoft.com/en-us/windows/apps/get-started/start-here?tabs=wingetconfig).[^1]
 2. Windows 11 with **PowerToys** installed and **Command Palette** enabled.[^1]
@@ -29,13 +29,13 @@ More information on diagram planning here: [FigJam Link](https://www.figma.com/b
 
 ### Installing the extension
 
-3. Build the Solution. Build > Build Solution (`F6`).
-4. Then deploy the extension. Build > Deploy Solution.
-5. Open PowerToys Command Palette, type `reload` and reload Command Palette, then it should be (after loading) on the very bottom of the list.<br>or find "CommandBeep", it should be on the list.
+4. Build the Solution. Build > Build Solution (`F6`).
+5. Then deploy the extension. Build > Deploy Solution.
+6. Open PowerToys Command Palette, type `reload` and reload Command Palette, then it should be (after loading) on the very bottom of the list.<br>or find "CommandBeep", it should be on the list.
 
 ### Debugging
 
-To debug, use (`F5`) instead and follow the 5th instruction above.
+To debug, use (`F5`) instead and follow the 6th instruction above.
 
 # Feature List (and To do List)
 
