@@ -42,6 +42,12 @@ namespace CommandBeep.Backend
             var response = await _httpClient.PostAsJsonAsync($"v1/chats/{ID}/messages", new { text = message });
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<bool> focusMessage(string ID, string draft)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"v1/focus", new { chatID = ID, draftText = draft });
+            return response.IsSuccessStatusCode;
+        }
     }
     internal class rawResponse
     {

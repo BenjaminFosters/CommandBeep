@@ -44,11 +44,20 @@ internal partial class CommandBeepSendPage : DynamicListPage {
     {
         if (_query == string.Empty)
         {
-            return [];
+            return [new ListItem() {
+                Title = "Open in Beeper",
+                Subtitle = $"Open {_chatTitle} on Beeper instead.",
+                Command = new AnonymousCommand(() => {
+                    _ = _beeperSrv.focusMessage(_chatId, _query);
+                }) { Name = "Open", Result = CommandResult.ShowToast("Opened in Beeper") }
+            },
+            new ListItem() {
+                Title = "Or type in your message to quickly send it.",
+                Subtitle = $"Type in your message to quickly send it to {_chatTitle}."
+            }];
         }
         else
         {
-
             return [new ListItem()
             {
                 Title = $"Send \"{_query}\"",
@@ -56,6 +65,13 @@ internal partial class CommandBeepSendPage : DynamicListPage {
                 Command = new AnonymousCommand(() => {
                     _ = _beeperSrv.sendMessage(_chatId, _query);
                 }) { Name = "Send", Result = CommandResult.ShowToast("Message Sent") }
+            },
+            new ListItem() {
+                Title = "Open in Beeper instead",
+                Subtitle = "And bring your draft to Beeper's message composer.",
+                Command = new AnonymousCommand(() => {
+                    _ = _beeperSrv.focusMessage(_chatId, _query); 
+                }) { Name = "Open", Result = CommandResult.ShowToast("Opened in Beeper") }
             }];
         }
     }

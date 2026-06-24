@@ -43,7 +43,8 @@ Do keep in mind, I will add necessary features, specifically to prevent [feature
 
 - [x] Querying Chats
 - [x] Sending Message
-- [x] User Feedback
+- [x] User Feedbacks on Actions
+- [x] Flow for Opening/Continuing on Beeper Desktop Composer
 - [ ] Ability to change API key
 - [ ] OAuth 2.0 authorization support
 - [ ] Faster querying speed through caching
