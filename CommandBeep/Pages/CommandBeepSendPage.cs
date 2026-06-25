@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-using CommandBeep.Backend;
+using CommandBeep.Backends;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
@@ -46,14 +46,16 @@ internal partial class CommandBeepSendPage : DynamicListPage {
         {
             return [new ListItem() {
                 Title = "Open in Beeper",
-                Subtitle = $"Open {_chatTitle} on Beeper instead.",
+                Subtitle = "with your chat ready!",
+                Icon = new IconInfo("\ue8a7"),
                 Command = new AnonymousCommand(() => {
                     _ = _beeperSrv.focusMessage(_chatId, _query);
                 }) { Name = "Open", Result = CommandResult.ShowToast("Opened in Beeper") }
             },
             new ListItem() {
                 Title = "Or type in your message to quickly send it.",
-                Subtitle = $"Type in your message to quickly send it to {_chatTitle}."
+                Subtitle = "Go ahead, even a \"Hello, World!\" will do!",
+                Icon = new IconInfo("\uf67b"),
             }];
         }
         else
@@ -61,14 +63,16 @@ internal partial class CommandBeepSendPage : DynamicListPage {
             return [new ListItem()
             {
                 Title = $"Send \"{_query}\"",
-                Subtitle = $"Send message to {_chatTitle}",
+                Subtitle = $"to {_chatTitle}",
+                Icon = new IconInfo("\ue724"),
                 Command = new AnonymousCommand(() => {
                     _ = _beeperSrv.sendMessage(_chatId, _query);
                 }) { Name = "Send", Result = CommandResult.ShowToast("Message Sent") }
             },
             new ListItem() {
                 Title = "Open in Beeper instead",
-                Subtitle = "And bring your draft to Beeper's message composer.",
+                Subtitle = "and bring your draft to Beeper's message composer.",
+                Icon = new IconInfo("\ue8a7"),
                 Command = new AnonymousCommand(() => {
                     _ = _beeperSrv.focusMessage(_chatId, _query); 
                 }) { Name = "Open", Result = CommandResult.ShowToast("Opened in Beeper") }

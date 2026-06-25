@@ -6,20 +6,15 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace CommandBeep.Backend
+namespace CommandBeep.Backends
 {
     internal class BeeperSrv
     {
         private readonly HttpClient _httpClient;
-
-        // Temporarily for MVP
         public BeeperSrv(string baseURI, string bearer)
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri(baseURI);
-
-            // Temporary Bearer Token, since it works locally, it's pratically useless if you're mamaged to steal it
-            // (tho won't be surprised if GitHub's secret scanning decided to delete it.)
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearer);
         }
@@ -59,6 +54,5 @@ namespace CommandBeep.Backend
         public string id { get; set; }
         public string title { get; set; }
         public string network { get; set; }
-        public string imgURL { get; set; }
     }
 }

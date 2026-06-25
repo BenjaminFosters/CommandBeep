@@ -2,6 +2,7 @@
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using CommandBeep.Helpers;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
@@ -10,13 +11,21 @@ namespace CommandBeep;
 public partial class CommandBeepCommandsProvider : CommandProvider
 {
     private readonly ICommandItem[] _commands;
+    private readonly SettingsManager _settingsManager = new();
 
     public CommandBeepCommandsProvider()
     {
+        Id = "id.my.reubenhu.commandbeep";
         DisplayName = "CommandBeep";
+        Settings = _settingsManager.Settings;
+
         Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
         _commands = [
-            new CommandItem(new CommandBeepPage()) { Title = DisplayName, Subtitle = "Send your Beeper Messages through Command Palette Window" },
+            new CommandItem(new CommandBeepPage(_settingsManager)) {
+                Title = DisplayName,
+                Subtitle = "Send your Beeper Messages through Command Palette Window",
+                MoreCommands = [new CommandContextItem(_settingsManager.Settings.SettingsPage)]
+            },
         ];
     }
 

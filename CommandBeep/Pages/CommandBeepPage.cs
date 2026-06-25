@@ -2,8 +2,9 @@
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using CommandBeep.Backend;
+using CommandBeep.Backends;
 using CommandBeep.Pages;
+using CommandBeep.Helpers;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 using System;
@@ -11,17 +12,22 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace CommandBeep;
 
 internal sealed partial class CommandBeepPage : DynamicListPage
 {
-    private readonly BeeperSrv _beeperSrv;
+    private BeeperSrv _beeperSrv;
     private string _query = string.Empty;
     private List<chatsByTitle> _chats = new();
+    private readonly SettingsManager _settingsManager;
+    
 
-    public CommandBeepPage()
+    public CommandBeepPage(SettingsManager settingsManager)
     {
+        _settingsManager = settingsManager;
+
         Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
         Title = "CommandBeep";
         Name = "Start Sending Messages";
@@ -32,8 +38,14 @@ internal sealed partial class CommandBeepPage : DynamicListPage
             Subtitle = "Start by typing the Chat/Contact name (e.g. John Doe)",
             Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png"),
         };
-        _beeperSrv = new BeeperSrv("http://localhost:23373/", "bdapi_6mxSA1itq8ntUXKE1FvhpVkNOAuOvK3fWR8lKkTo8_w");
-        LoadChatAsync();
+
+        buildBeeperSrv();
+        _settingsManager.Settings.SettingsChanged += (_, _) => buildBeeperSrv();
+    }
+
+    public void buildBeeperSrv()
+    {
+        _beeperSrv = new BeeperSrv(_settingsManager.Endpoint, _settingsManager.ApiKey);
     }
     
     public override void UpdateSearchText(string oldSearch, string newSearch)
@@ -58,8 +70,8 @@ internal sealed partial class CommandBeepPage : DynamicListPage
             return _chats.Select(chat => new ListItem()
             {
                 Title = chat.title,
-                Subtitle = $"Over at {chat.network}",
-                Icon = chat.imgURL != null ? IconHelpers.FromRelativePath(new Uri(chat.imgURL).LocalPath) : IconHelpers.FromRelativePath("Assets\\StoreLogo.png"),
+                Subtitle = $"@ {chat.network}",
+                Icon = new IconInfo("\ue8f2"),
                 Command = new CommandBeepSendPage(_beeperSrv, chat.id, chat.title),
             }).ToArray();
         }
