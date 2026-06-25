@@ -20,41 +20,57 @@ More information on diagram planning here: [FigJam Link](https://www.figma.com/b
 3. [Enable Developer Mode on Windows](https://learn.microsoft.com/en-us/windows/advanced-settings/developer-mode).[^1]
 4. **Beeper Desktop** installed with **Desktop API enabled**.[^2]
 
-### Setting up
+## Installing Extension
 
 1. Clone the repository (`git clone https://github.com/BenjaminFosters/CommandBeep`).
 2. Open the solution file `CommandBeep.sln` in Visual Studio.
-3. In the Solution Explorer, go to `CommandBeep\Pages\CommandBeepPage.cs`<br>Replace `_beeperSrv = new BeeperSrv("http://localhost:23373/", "bdapi_6mxSA1itq8ntUXKE1FvhpVkNOAuOvK3fWR8lKkTo8_w");` with your own API key.[^3]
-   - To get API Key, go to Beeper Desktop, Settings (`Ctrl+,`) > Integrations > Approved connections > Plus icon > Give a name and allow sensitive permissions > Copy the API key.
+3. Build the Solution. **Build > Build Solution** (`F6`).
+4. Then deploy the extension. **Build > Deploy Solution**.
+5. Open PowerToys Command Palette, type `reload` and reload Command Palette, then it should be (after loading) on the very bottom of the list, or find "CommandBeep".
+6. Add your Beeper Desktop API key:
+   - Go to your Beeper Desktop > Settings (`Ctrl+,`) > Integrations > Beeper Desktop API > Approved Connections > Plus Icon
 
-### Installing the extension
+   | Options                 | Value             |
+   | ----------------------- | ----------------- |
+   | Name                    | Anything You Want |
+   | Expires In              | Never             |
+   | Allow sensitive actions | True              |
 
-4. Build the Solution. Build > Build Solution (`F6`).
-5. Then deploy the extension. Build > Deploy Solution.
-6. Open PowerToys Command Palette, type `reload` and reload Command Palette, then it should be (after loading) on the very bottom of the list.<br>or find "CommandBeep", it should be on the list.
+   Then copy your API key
 
-### Debugging
+   ![Get your API Key](materials/apikey/get.gif)
+   - Open Command Palette, type `CommandBeep` and press `Ctrl + Enter` to open the settings window, then paste your API key and click **Save**.
 
-To debug, use (`F5`) instead and follow the 6th instruction above.
+   ![Add your API Key](materials/apikey/add.gif)
 
-# Feature List (and To do List)
+## Debugging
+
+To debug, use (`F5`) instead and follow the 5th instruction above.
+
+# Feature List
 
 Do keep in mind, I will add necessary features, specifically to prevent [feature creep](https://en.wikipedia.org/wiki/Feature_creep). Also these features are designed for user experience (in terms of intuitiveness and overall performance) and general aesthetics.
+
+## Implemented Features
 
 - [x] Querying Chats
 - [x] Sending Message
 - [x] User Feedbacks on Actions
 - [x] Flow for Opening/Continuing on Beeper Desktop Composer
-- [ ] Ability to change API key
+- [x] Ability to change API key
+- [x] Icons for Accessibility & Aesthetics
+
+## Soon to be Implemented
+
 - [ ] OAuth 2.0 authorization support
 - [ ] Faster querying speed through caching
-- [ ] Icons for Accessibility & Aesthetics
-- [ ] Photo Profile with circle & 1:1 ratio.
+
+## Graveyards (Cancelled Features)
+
+- ~~Photo Profile with circle & 1:1 ratio.~~
 
 # Footnotes
 
 [^1]: Source: [Microsoft Learn](https://learn.microsoft.com/en-us/windows/powertoys/command-palette/creating-an-extension#overview)
 
 [^2]: To enable Desktop API, open Beeper Desktop, go to Settings (`Ctrl+,`) > Integrations > Beeper Desktop API > Enable **Allow connections**. It should be available on `https://127.0.0.1:23373`. (**Not to be confused with `localhost` which can have some issues with OAuth 2.0 authorization.**)
-
-[^3]: Yes, I know I hard coded the key (again, this is still in PoC), but it will change soon with implementation of fillable API key and OAuth 2.0 authorization. Since the key works on localhost connection, it should be fine for now. However, there's a risk of sharing the key, **if you tunneled the connection or enables remote access**.<br>That said, if you ever get your key through Git, please revoke it immediately. (If it leaks, then assume somebody already got the key.)
