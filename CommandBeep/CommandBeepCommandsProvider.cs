@@ -2,9 +2,10 @@
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using CommandBeep.Helpers;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
+
+using CommandBeep.Helpers;
 
 namespace CommandBeep;
 
@@ -19,7 +20,7 @@ public partial class CommandBeepCommandsProvider : CommandProvider
         DisplayName = "CommandBeep";
         Settings = _settingsManager.Settings;
 
-        Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
+        Icon = Icons.CBIcon;
         _commands = [
             new CommandItem(new CommandBeepPage(_settingsManager)) {
                 Title = DisplayName,

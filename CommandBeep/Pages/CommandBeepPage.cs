@@ -2,17 +2,16 @@
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.CommandPalette.Extensions;
+using Microsoft.CommandPalette.Extensions.Toolkit;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 using CommandBeep.Backends;
 using CommandBeep.Pages;
 using CommandBeep.Helpers;
-using Microsoft.CommandPalette.Extensions;
-using Microsoft.CommandPalette.Extensions.Toolkit;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net;
 
 namespace CommandBeep;
 
@@ -28,7 +27,7 @@ internal sealed partial class CommandBeepPage : DynamicListPage
     {
         _settingsManager = settingsManager;
 
-        Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
+        Icon = Icons.CBIcon;
         Title = "CommandBeep";
         Name = "Start Sending Messages";
         PlaceholderText = "Type out Chat/Contact name (e.g. John Doe)";
@@ -36,7 +35,7 @@ internal sealed partial class CommandBeepPage : DynamicListPage
         {
             Title = "No Chats to Show",
             Subtitle = "Start by typing the Chat/Contact name (e.g. John Doe)",
-            Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png"),
+            Icon = Icons.CBIcon,
         };
 
         buildBeeperSrv();
@@ -71,7 +70,7 @@ internal sealed partial class CommandBeepPage : DynamicListPage
             {
                 Title = chat.title,
                 Subtitle = $"@ {chat.network}",
-                Icon = new IconInfo("\ue8f2"),
+                Icon = Icons.Chats,
                 Command = new CommandBeepSendPage(_beeperSrv, chat.id, chat.title),
             }).ToArray();
         }
