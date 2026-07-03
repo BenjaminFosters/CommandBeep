@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -18,16 +19,25 @@ namespace CommandBeep.Backends
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearer);
         }
 
-        public async Task<List<chatsByTitle>> fetchChatList(string query)
+        public async Task<FetchChatListResponse> fetchChatList(string query)
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<rawResponse>($"v1/chats/search?query={Uri.EscapeDataString(query)}&scope=titles&limit=10");
-                return response?.items ?? new List<chatsByTitle>();
+                var response = await _httpClient.GetAsync($"v1/chats/search?{(String.IsNullOrEmpty(query) ? "" : $"query={Uri.EscapeDataString(query)}&")}scope=titles");
+
+                return new FetchChatListResponse
+                {
+                    StatusCode = response.StatusCode,
+                    Items = response.IsSuccessStatusCode ? (await response.Content.ReadFromJsonAsync<FetchChatListResponse>())?.Items ?? [] : []
+                };
             }
-            catch (Exception ex)
+            catch (HttpRequestException) // Error handling for offline Endpoint (which can happen if PowerToys launches first before Beeper)
             {
-                return new List<chatsByTitle>();
+                return new FetchChatListResponse
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Items = []
+                };
             }
         }
 
@@ -37,21 +47,24 @@ namespace CommandBeep.Backends
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> focusMessage(string ID, string draft)
+        public async Task<bool> focusChat(string ID, string draft)
         {
             var response = await _httpClient.PostAsJsonAsync($"v1/focus", new { chatID = ID, draftText = draft });
             return response.IsSuccessStatusCode;
         }
     }
-    internal class rawResponse
-    {
-        public List<chatsByTitle> items { get; set; }
-    }
+}
+internal class FetchChatListResponse
+{
+    public List<ChatsByTitle> Items { get; set; } = [];
+    public HttpStatusCode StatusCode { get; set; }
+}
 
-    internal class chatsByTitle
-    {
-        public string id { get; set; }
-        public string title { get; set; }
-        public string network { get; set; }
-    }
+internal class ChatsByTitle
+{
+    public required string Id { get; set; }
+    public required string Title { get; set; }
+    public required string Network { get; set; }
+    public required string Type { get; set; }
+    public bool IsReadOnly { get; set; }
 }

@@ -8,10 +8,12 @@ using Microsoft.CommandPalette.Extensions.Toolkit;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net;
 
 using CommandBeep.Backends;
 using CommandBeep.Pages;
 using CommandBeep.Helpers;
+using static CommandBeep.Helpers.Shorthanders;
 
 namespace CommandBeep;
 
@@ -19,9 +21,9 @@ internal sealed partial class CommandBeepPage : DynamicListPage
 {
     private BeeperSrv _beeperSrv;
     private string _query = string.Empty;
-    private List<chatsByTitle> _chats = new();
+    private FetchChatListResponse _response;
     private readonly SettingsManager _settingsManager;
-    
+
 
     public CommandBeepPage(SettingsManager settingsManager)
     {
@@ -38,15 +40,16 @@ internal sealed partial class CommandBeepPage : DynamicListPage
             Icon = Icons.CBIcon,
         };
 
-        buildBeeperSrv();
-        _settingsManager.Settings.SettingsChanged += (_, _) => buildBeeperSrv();
+        BuildBeeperSrv();
+        _settingsManager.Settings.SettingsChanged += (_, _) => BuildBeeperSrv();
+        _ = LoadChatAsync();
     }
 
-    public void buildBeeperSrv()
+    public void BuildBeeperSrv()
     {
         _beeperSrv = new BeeperSrv(_settingsManager.Endpoint, _settingsManager.ApiKey);
     }
-    
+
     public override void UpdateSearchText(string oldSearch, string newSearch)
     {
         _query = newSearch;
@@ -55,24 +58,94 @@ internal sealed partial class CommandBeepPage : DynamicListPage
 
     private async Task LoadChatAsync()
     {
-        _chats = await _beeperSrv.fetchChatList(_query);
+        _response = await _beeperSrv.fetchChatList(_query);
         RaiseItemsChanged();
     }
 
     public override IListItem[] GetItems()
     {
-        if (_chats.Count == 0)
+        switch (_response.StatusCode)
         {
-            return [];
-        } else
-        {
-            return _chats.Select(chat => new ListItem()
-            {
-                Title = chat.title,
-                Subtitle = $"@ {chat.network}",
-                Icon = Icons.Chats,
-                Command = new CommandBeepSendPage(_beeperSrv, chat.id, chat.title),
-            }).ToArray();
+            case HttpStatusCode.OK:
+                return _response.Items.Where(chat => !chat.IsReadOnly).Select(chat => new ListItem()
+                {
+                    Title = chat.Title,
+                    Subtitle = $"@ {chat.Network} ({(chat.Type == "single" ? "Direct Message" : "Group")})",
+                    Icon = chat.Type == "single" ? Icons.SingleChat : Icons.GroupChat,
+                    Command = new CommandBeepSendPage(_beeperSrv, chat.Id, chat.Title),
+                    MoreCommands = [
+                        new CommandContextItem(CommandWithToast(() => _beeperSrv.focusChat(chat.Id, ""), "Open in Beeper", "Opened in Beeper")) { Icon = Icons.Open },
+                        new CommandContextItem(new CopyTextCommand(chat.Id) { Name = "Copy Chat ID"}),
+                    ]
+                }).ToArray();
+
+            case HttpStatusCode.Unauthorized:
+                return [new ListItem()
+                {
+                    Title = "Invalid API Key",
+                    Subtitle = "Update it in the Settings. (or perhaps you connected to wrong endpoint?)",
+                    Command = _settingsManager.Settings.SettingsPage,
+                },
+                new ListItem()
+                {
+                    Title = "Reload Connection",
+                    Subtitle = "cus after updating, you *might* need to turn things off and on back.",
+                    Icon = Icons.Reload,
+                    Command = CommandKeepOpen(() => _ = LoadChatAsync(), "Reload")
+                },];
+
+            case HttpStatusCode.ServiceUnavailable:
+                return [new ListItem()
+                {
+                    Title = $"Can't connect to {_settingsManager.Endpoint}",
+                    Subtitle = "Make sure your Beeper is up and running.",
+                    Icon = Icons.Offline,
+                },
+                new ListItem()
+                {
+                    Title = "Reload Connection (especially after cold boot)",
+                    Subtitle = "Have you tried to turn it off and back on again?",
+                    Icon = Icons.Reload,
+                    Command = CommandKeepOpen(() => _ = LoadChatAsync(), "Reload")
+                },
+                new ListItem()
+                {
+                    Title = "If your endpoint is wrong.",
+                    Subtitle = "Then change it on settings.",
+                    Command = _settingsManager.Settings.SettingsPage,
+                }];
+
+            case HttpStatusCode.NotFound:
+                return [new ListItem()
+                {
+                    Title = $"API Access Disabled",
+                    Subtitle = "Enable your Desktop API access.",
+                    Icon = Icons.Denied,
+                },
+                new ListItem()
+                {
+                    Title = "Reload Connection",
+                    Subtitle = "Have you tried to turn it off and back on again?",
+                    Icon = Icons.Reload,
+                    Command = CommandKeepOpen(() => _ = LoadChatAsync(), "Reload")
+                },
+                new ListItem()
+                {
+                    Title = "If your endpoint is wrong.",
+                    Subtitle = "Then change it on settings.",
+                    Command = _settingsManager.Settings.SettingsPage,
+                }];
+
+            default:
+                return [new ListItem() {
+                    Title = "Pardon me! We haven't seen this error before!",
+                    Subtitle = $"Error: {_response.StatusCode}",
+                    Icon = Icons.Bug,
+                },
+                //new ListItem() {
+                //    Title = "Copy Error Message"
+                //}
+                ];
         }
     }
 }

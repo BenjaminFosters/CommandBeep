@@ -7,14 +7,15 @@ using static CommandBeep.Helpers.Shorthanders;
 
 namespace CommandBeep.Pages;
 
-internal partial class CommandBeepSendPage : DynamicListPage {
+internal partial class CommandBeepSendPage : DynamicListPage
+{
     private readonly BeeperSrv _beeperSrv;
     string _chatTitle = string.Empty;
     string _chatId = string.Empty;
     string _query = string.Empty;
     public CommandBeepSendPage(BeeperSrv beeperSrv, string chatId, string chatTitle)
     {
-        Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
+        Icon = Icons.Send;
         Title = $"CommandBeep - Sending to {chatTitle}";
         Name = "Send a Message";
         PlaceholderText = "Type in your message (such as helloing your recepient)";
@@ -37,13 +38,13 @@ internal partial class CommandBeepSendPage : DynamicListPage {
 
     public override IListItem[] GetItems()
     {
-        if (_query == string.Empty)
+        if (string.IsNullOrEmpty(_query))
         {
             return [new ListItem() {
                 Title = "Open in Beeper",
                 Subtitle = "with your chat ready!",
                 Icon = Icons.Open,
-                Command = CommandWithToast(() => _beeperSrv.focusMessage(_chatId, _query), "Open", "Opened in Beeper")
+                Command = CommandWithToast(() => _beeperSrv.focusChat(_chatId, _query), "Open", "Opened in Beeper")
             },
             new ListItem() {
                 Title = "Or type in your message to quickly send it.",
@@ -58,13 +59,13 @@ internal partial class CommandBeepSendPage : DynamicListPage {
                 Title = $"Send \"{_query}\"",
                 Subtitle = $"to {_chatTitle}",
                 Icon = Icons.Send,
-                Command = CommandWithToast(() => _beeperSrv.focusMessage(_chatId, _query), "Send", "Message Sent")
+                Command = CommandWithToast(() => _beeperSrv.sendMessage(_chatId, _query), "Send", "Message Sent")
             },
             new ListItem() {
                 Title = "Open in Beeper instead",
                 Subtitle = "and bring your draft to Beeper's message composer.",
                 Icon = Icons.Open,
-                Command = CommandWithToast(() => _beeperSrv.focusMessage(_chatId, _query), "Open", "Opened in Beeper")
+                Command = CommandWithToast(() => _beeperSrv.focusChat(_chatId, _query), "Open", "Opened in Beeper")
             }];
         }
     }

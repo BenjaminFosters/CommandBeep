@@ -10,4 +10,14 @@ internal static class Shorthanders
     {
         return new AnonymousCommand(() => action()) { Name = label, Result = CommandResult.ShowToast(toastMessage) };
     }
+
+    public static AnonymousCommand CommandShorthands(Func<Task> action, string label)
+    {
+        return new AnonymousCommand(() => action()) { Name = label };
+    }
+
+    public static AnonymousCommand CommandKeepOpen(Func<Task> action, string label)
+    {
+        return new AnonymousCommand(() => action()) { Name = label, Result = CommandResult.KeepOpen() };
+    }
 }

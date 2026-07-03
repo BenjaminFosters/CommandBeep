@@ -6,12 +6,13 @@ using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
 using CommandBeep.Helpers;
+using System.Diagnostics;
 
 namespace CommandBeep;
 
 public partial class CommandBeepCommandsProvider : CommandProvider
 {
-    private readonly ICommandItem[] _commands;
+    //private readonly ICommandItem[] _commands;
     private readonly SettingsManager _settingsManager = new();
 
     public CommandBeepCommandsProvider()
@@ -21,18 +22,24 @@ public partial class CommandBeepCommandsProvider : CommandProvider
         Settings = _settingsManager.Settings;
 
         Icon = Icons.CBIcon;
-        _commands = [
-            new CommandItem(new CommandBeepPage(_settingsManager)) {
-                Title = DisplayName,
-                Subtitle = "Send your Beeper Messages through Command Palette Window",
-                MoreCommands = [new CommandContextItem(_settingsManager.Settings.SettingsPage)]
-            },
-        ];
+        //_commands = [
+        //    new CommandItem(new CommandBeepPage(_settingsManager)) {
+        //        Title = DisplayName,
+        //        Subtitle = "Send your Beeper Messages through Command Palette Window",
+        //        MoreCommands = [new CommandContextItem(_settingsManager.Settings.SettingsPage)]
+        //    },
+        //];
     }
 
     public override ICommandItem[] TopLevelCommands()
     {
-        return _commands;
+        Debug.WriteLine("Benji");
+        return [
+            new CommandItem(new CommandBeepPage(_settingsManager)) {
+                Title = DisplayName,
+                Subtitle = "Send your Beeper Messages through Command Palette Window",
+                MoreCommands = [new CommandContextItem(_settingsManager.Settings.SettingsPage)]
+            }
+        ];
     }
-
 }
