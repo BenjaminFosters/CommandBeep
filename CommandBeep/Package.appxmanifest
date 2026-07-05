@@ -9,9 +9,9 @@
   IgnorableNamespaces="uap uap3 rescap">
 
   <Identity
-    Name="id.my.reubenhu.commandbeep"
-    Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
-    Version="0.0.1.0" />
+    Name="ReubenHu.CommandBeep"
+    Publisher="CN=D202CE72-89B1-4361-8CFB-F7DA39346CC1"
+    Version="1.0.1.0" />
   <!-- When you're ready to publish your extension, you'll need to change the
        Publisher= to match your own identity -->
 
