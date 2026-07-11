@@ -22,13 +22,6 @@ public partial class CommandBeepCommandsProvider : CommandProvider
         Settings = _settingsManager.Settings;
 
         Icon = Icons.CBIcon;
-        //_commands = [
-        //    new CommandItem(new CommandBeepPage(_settingsManager)) {
-        //        Title = DisplayName,
-        //        Subtitle = "Send your Beeper Messages through Command Palette Window",
-        //        MoreCommands = [new CommandContextItem(_settingsManager.Settings.SettingsPage)]
-        //    },
-        //];
     }
 
     public override ICommandItem[] TopLevelCommands()
