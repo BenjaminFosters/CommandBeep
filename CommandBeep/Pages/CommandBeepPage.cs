@@ -5,7 +5,6 @@
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
