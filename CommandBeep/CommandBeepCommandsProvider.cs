@@ -26,7 +26,6 @@ public partial class CommandBeepCommandsProvider : CommandProvider
 
     public override ICommandItem[] TopLevelCommands()
     {
-        Debug.WriteLine("Benji");
         return [
             new CommandItem(new CommandBeepPage(_settingsManager)) {
                 Title = DisplayName,
