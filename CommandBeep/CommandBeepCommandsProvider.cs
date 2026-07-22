@@ -6,7 +6,6 @@ using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
 using CommandBeep.Helpers;
-using System.Diagnostics;
 
 namespace CommandBeep;
 

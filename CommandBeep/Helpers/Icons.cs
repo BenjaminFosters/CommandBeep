@@ -15,6 +15,7 @@ internal static class Icons
     public static IconInfo Offline { get; } = new("\uf384");
     public static IconInfo Reload { get; } = new("\ue72c");
     public static IconInfo Denied { get; } = new("\ueb90");
+    public static IconInfo Auth { get; } = new("\ue910");
     public static IconInfo Bug { get; } = new("\uebe8");
     public static IconInfo CBIcon { get; } = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
 }
