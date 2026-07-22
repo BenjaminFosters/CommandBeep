@@ -20,5 +20,5 @@ In case you're unable to use OAuth 2.0, or you're (for some reason) uses remote 
 
    ![Add your API Key](assets/apikey/add.gif)
 
-> [!FAQ]
+> [!TIP]
 > Even though you can use `Ctrl + Enter` to open the settings page, the settings page is also accessible through the Command Palette settings page, or by clicking **Update in Settings** when you get invalid API key error.

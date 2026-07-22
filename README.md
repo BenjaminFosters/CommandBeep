@@ -4,10 +4,6 @@ Send messages on [Beeper](https://beeper.com) from [PowerToys' Command Palette](
 
 ![A poster of CommandBeep GitHub Header, with text "CommandBeep: Send Beeper Messages Faster, Powered by Command Palette" with an image of Command Palette with CommandBeep window open.](assets/CommandBeep.jpg)
 
-> [!IMPORTANT]
-
-Documentation hasn't been done, one moment please! uwu
-
 # How It Works?
 
 More information on diagram planning here: [FigJam Link](https://www.figma.com/board/q8LBTIiQcOWvAJ525bE2kS/CommandBeep?node-id=0-1&t=G6Jccg5lCIMLM6ME-1) or [FigJam file attached in this repo.](materials/CommandBeep.jam)
@@ -25,12 +21,12 @@ Before using CommandBeep (either Production or Development builds from VS), you 
 ## CommandBeep Time
 
 1. Install the extension:
-   - Microsoft Store: TBA
-   - Winget: TBA
+   - Microsoft Store: https://apps.microsoft.com/detail/9NZD5P5KPLRF
+   - Winget: `winget install 9NZD5P5KPLRF`
 2. Open PowerToys Command Palette, type `CommandBeep` and press `Enter`.
 3. Choose an option **Connect your Beeper Desktop**. Then follow the OAuth 2.0 flow until it's done.![A CommandBeep highlights an option for OAuth 2.0 Authorization](assets/oauth/2.jpg)
 
-However, if you wanted to use manual API key instead, [follow this instruction instead](use-manual-api-key).
+However, if you wanted to use manual API key instead, [follow this instruction instead](use-manual-api-key.md).
 
 # Development
 
@@ -76,8 +72,18 @@ Do keep in mind, I will add necessary features, specifically to prevent [feature
 - ~~Photo Profile with circle & 1:1 ratio.~~
 - ~~Faster querying speed through caching~~
 
+# My Final Message
+
+I created this extension because I've always wanted and been curious to apply what I've learned, even if it sounds silly. It all started with curiosity, like most engineers and builders early in their careers. This is something I'm truly passionate about and interested in, and I want to share it with the world.
+
+This project isn't going anywhere, but updates will come at my own pace rather than on a fixed schedule, just don't expect anything soon.
+
+My message to future builders and developers is, **Keep building for the world and for yourself.** Thank you.
+
+#OpenToFoster Since 2007 - Reuben Hu/Benjamin Bearington
+
 # Footnotes
 
 [^1]: Source: [Microsoft Learn](https://learn.microsoft.com/en-us/windows/powertoys/command-palette/creating-an-extension#overview)
 
-[^2]: To enable Desktop API, open Beeper Desktop, go to Settings (`Ctrl+,`) > Integrations > Beeper Desktop API > Enable **Allow connections**. It should be available on `https://127.0.0.1:23373`. (**Not to be confused with `localhost` which can have some issues with OAuth 2.0 authorization.**)
+[^2]: To enable Desktop API, open Beeper Desktop, go to Settings (`Ctrl+,`) > Integrations > Beeper Desktop API > Enable **Allow connections**. It should be available on `http://127.0.0.1:23373`. (**Not to be confused with `localhost` which can have some issues with OAuth 2.0 authorization.**)
