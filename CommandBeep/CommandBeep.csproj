@@ -88,7 +88,7 @@
 		<!-- https://learn.microsoft.com/en-us/windows/powertoys/command-palette/publish-extension-store -->
 		<AppxPackageIdentityName>ReubenHu.CommandBeep</AppxPackageIdentityName>
 		<AppxPackagePublisher>CN=D202CE72-89B1-4361-8CFB-F7DA39346CC1</AppxPackagePublisher>
-		<AppxPackageVersion>1.1.0.0</AppxPackageVersion>
+		<AppxPackageVersion>1.2.0.0</AppxPackageVersion>
 
 	</PropertyGroup>
 
