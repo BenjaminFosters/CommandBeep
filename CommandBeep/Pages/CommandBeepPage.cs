@@ -22,7 +22,7 @@ internal sealed partial class CommandBeepPage : DynamicListPage
     private string _query = string.Empty;
     private FetchChatListResponse _response;
     private readonly SettingsManager _settingsManager;
-
+    private readonly OAuth _oauth;
 
     public CommandBeepPage(SettingsManager settingsManager)
     {
@@ -38,6 +38,8 @@ internal sealed partial class CommandBeepPage : DynamicListPage
             Subtitle = "Start by typing the Chat/Contact name (e.g. John Doe)",
             Icon = Icons.CBIcon,
         };
+
+        _oauth = new OAuth(_settingsManager);
 
         BuildBeeperSrv();
         _settingsManager.Settings.SettingsChanged += (_, _) => BuildBeeperSrv();
@@ -82,7 +84,20 @@ internal sealed partial class CommandBeepPage : DynamicListPage
                 return [new ListItem()
                 {
                     Title = "Invalid API Key",
-                    Subtitle = "Update it in the Settings. (or perhaps you connected to wrong endpoint?)",
+                    Subtitle = "Please Update It",
+                    Icon = Icons.Denied
+                },
+                new ListItem()
+                {
+                    Title = "Connect your Beeper Desktop",
+                    Subtitle = "Using OAuth 2.0 for Authorization",
+                    Command = CommandShorthands(async () => await _oauth.GetOAuthToken(), "Authorize"),
+                    Icon = Icons.Auth
+                },
+                new ListItem()
+                {
+                    Title = "Update in Settings",
+                    Subtitle = "Manually add your API Key (and also your endpoint)",
                     Command = _settingsManager.Settings.SettingsPage,
                 },
                 new ListItem()

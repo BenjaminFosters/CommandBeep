@@ -1,4 +1,5 @@
 ﻿using Microsoft.CommandPalette.Extensions.Toolkit;
+
 using System.IO;
 
 namespace CommandBeep.Helpers;
@@ -25,5 +26,11 @@ public sealed class SettingsManager : JsonSettingsManager
         var directory = Utilities.BaseSettingsPath("Microsoft.CmdPal");
         Directory.CreateDirectory(directory);
         return Path.Combine(directory, "settings.json");
+    }
+
+    public void SetAPIKey(string apiKey)
+    {
+        this._apiKey.Value = apiKey;
+        this.SaveSettings();
     }
 }

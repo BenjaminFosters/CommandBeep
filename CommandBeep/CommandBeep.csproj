@@ -16,6 +16,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove="Assets\StoreLogo.png" />
+		<None Remove="Backends\cb_hero.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -45,6 +46,7 @@
 		<ProjectCapability Include="Msix" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Duende.IdentityModel.OidcClient" />
 		<PackageReference Include="Microsoft.CommandPalette.Extensions" />
 		<PackageReference Include="Microsoft.Windows.CsWinRT" />
 		<PackageReference Include="Shmuelie.WinRTServer" />
@@ -54,6 +56,11 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="Backends\oauth.html">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 	<!--
