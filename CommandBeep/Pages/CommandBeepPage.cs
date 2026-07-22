@@ -43,12 +43,12 @@ internal sealed partial class CommandBeepPage : DynamicListPage
 
         BuildBeeperSrv();
         _settingsManager.Settings.SettingsChanged += (_, _) => BuildBeeperSrv();
-        _ = LoadChatAsync();
     }
 
     public void BuildBeeperSrv()
     {
         _beeperSrv = new BeeperSrv(_settingsManager.Endpoint, _settingsManager.ApiKey);
+        _ = LoadChatAsync();
     }
 
     public override void UpdateSearchText(string oldSearch, string newSearch)
@@ -91,7 +91,7 @@ internal sealed partial class CommandBeepPage : DynamicListPage
                 {
                     Title = "Connect your Beeper Desktop",
                     Subtitle = "Using OAuth 2.0 for Authorization",
-                    Command = CommandShorthands(async () => await _oauth.GetOAuthToken(), "Authorize"),
+                    Command = CommandShorthands(async () => { await _oauth.GetOAuthToken(); BuildBeeperSrv(); }, "Authorize"),
                     Icon = Icons.Auth
                 },
                 new ListItem()
@@ -105,7 +105,7 @@ internal sealed partial class CommandBeepPage : DynamicListPage
                     Title = "Reload Connection",
                     Subtitle = "cus after updating, you *might* need to turn things off and on back.",
                     Icon = Icons.Reload,
-                    Command = CommandKeepOpen(() => _ = LoadChatAsync(), "Reload")
+                    Command = CommandKeepOpen(() => { BuildBeeperSrv(); return Task.CompletedTask; }, "Reload")
                 },];
 
             case HttpStatusCode.ServiceUnavailable:
@@ -120,7 +120,7 @@ internal sealed partial class CommandBeepPage : DynamicListPage
                     Title = "Reload Connection (especially after cold boot)",
                     Subtitle = "Have you tried to turn it off and back on again?",
                     Icon = Icons.Reload,
-                    Command = CommandKeepOpen(() => _ = LoadChatAsync(), "Reload")
+                    Command = CommandKeepOpen(() => { BuildBeeperSrv(); return Task.CompletedTask; }, "Reload")
                 },
                 new ListItem()
                 {
@@ -141,7 +141,7 @@ internal sealed partial class CommandBeepPage : DynamicListPage
                     Title = "Reload Connection",
                     Subtitle = "Have you tried to turn it off and back on again?",
                     Icon = Icons.Reload,
-                    Command = CommandKeepOpen(() => _ = LoadChatAsync(), "Reload")
+                    Command = CommandKeepOpen(() => { BuildBeeperSrv(); return Task.CompletedTask; }, "Reload")
                 },
                 new ListItem()
                 {

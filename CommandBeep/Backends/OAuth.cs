@@ -25,7 +25,7 @@ internal class OAuth
         _httpClient.BaseAddress = new Uri(_settingsManager.Endpoint);
     }
 
-    public async Task GetOAuthToken()
+    public async Task GetOAuthToken() // Some of the part are co-authored by A\'s Claude Sonnet 5
     {
         var verifier = HelperGet.CodeVerifier();
         var challenge = HelperGet.CodeChallenge(verifier);
